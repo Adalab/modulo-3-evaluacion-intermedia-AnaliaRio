@@ -5,37 +5,43 @@ import { useState } from 'react';
 function App() {
   console.log(quoteList);
 
-  // VARIABLES DE ESTADO
+  // ---------- STATE VARIABLES ----------
   const [data, setData] = useState(quoteList);
   const [search, setSearch] = useState("");
+  const [searchByCharacter, setSearchByCharacter] = useState("");
 
-  // Frase que estoy añadiendo en ese momento
+  // Quote I'm adding
   const [newQuote, setNewQuote] = useState({
     quote: "",
     character: "",
   });
 
-
-  // Función encargada de modificar variable de estado botón búsqueda
+  // ---------- FUNCTIONS ----------
+  // 1. Function to modify search button state variable
   const handleSearch = (ev) => {
     setSearch(ev.target.value);
   }
 
-  // Función encargada de modificar añadir nueva frase - SPREAD (más o menos un push) - Modifica solo una propiedad de un objeto, pero no todo
+  // 2. Function to modify search button state variable
+  const handleSearchByCharacter = (ev) => {
+    setSearchByCharacter(ev.target.value);
+  };
+
+  // 3. Function to add new quote - SPREAD changes a single property of an object
   const handleNewQuote = (ev) => {
     setNewQuote({
-      ...newQuote, // Quédate con todo lo que tengas
+      ...newQuote, // Keep what you already have
       [ev.target.id]: ev.target.value, // Corchetes porque es una propiedad de un objeto que está guardada en una variable
       // ID coge nombre de la propiedad del objeto
     });
   };
 
-  // Función encargada de pintar (añadir) - PUSH
+  // 4. Function to paint new element - PUSH
   const handleClickAdd = (ev) => {
     ev.preventDefault();
-    setData([ // Corchetes porque setData es un array. SetData porque queremos modificar data
-      ...data, // Quédate con lo que ya tienes
-      newQuote //Añade un nuevo elemento
+    setData([ // Square brackets because "setData" is an array. I'm using "setData" because I want to modify "data" 
+      ...data, // Keep what you already have
+      newQuote // Add a new element
     ]);
     setNewQuote({
       quote: "",
@@ -43,7 +49,7 @@ function App() {
     });
   };
 
-  // Para pintar el HTML - Filtrar primero y luego MAP (se concatenan)
+  // PAINT IN HTML - Filter first and then MAP (concatenate)
   const htmlData = data
 
   .filter(
@@ -51,28 +57,31 @@ function App() {
       oneQuote.quote.toLowerCase().includes(search.toLowerCase()) ||
       oneQuote.character.toLowerCase().includes(search.toLowerCase())
   )
+  .filter(
+    (oneQuote) =>
+      oneQuote.quote.toLowerCase().includes(searchByCharacter.toLowerCase()) ||
+      oneQuote.character.toLowerCase().includes(searchByCharacter.toLowerCase())
+  )
 
   .map((quote, i)=> {
     return (
       <li className="quote__item" key={i}>
         <p className="quote__name">
-          <label className="quote__label">Nombre:</label>{quote.quote} {quote.quote}
+          {quote.quote} - {quote.character}
         </p>
-        <p className="quote__phone">
-          <label className="quote__label">Teléfono:</label>
-        </p>
-    </li>
+      </li>
     );
   });
 
   return (
     <div className="page">
+
       {/* ---------- HEADER ---------- */}
       <header className="header">
-        <h1 className="header__title">Frases de Friends</h1>
-
-
+        <a target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=Xs-HbHCcK58">  <h1 className="header__title">Frases de Friends 🦞</h1></a>
+      
         <form>
+          <label htmlFor="">Filtrar por frase</label>
           <input
             className="header__search"
             autoComplete="off"
@@ -83,6 +92,27 @@ function App() {
             value={search}
           />
         </form>
+
+        <form>
+          <label htmlFor="characters">Filtrar por personaje</label>
+          <select
+            name="characters"
+            id="characters"
+            className="header__search"
+            onChange={handleSearchByCharacter}
+            value={searchByCharacter}
+          >
+            <option value="Todos">Todos</option>
+            <option value="Ross">Ross</option>
+            <option value="Monica">Monica</option>
+            <option value="Joey">Joey</option>
+            <option value="Phoebe">Phoebe</option>
+            <option value="Chandler">Chandler</option>
+            <option value="Rachel">Rachel</option>
+          </select>
+      
+        </form>
+
       </header>
 
       <main>
@@ -100,7 +130,7 @@ function App() {
             type="text"
             name="quote"
             id="quote"
-            placeholder="Frase"
+            placeholder="F · r · a · s · e"
             onChange={handleNewQuote}
             value={newQuote.quote}
           />
@@ -112,7 +142,6 @@ function App() {
             placeholder="Personaje"
             onChange={handleNewQuote}
             value={newQuote.character}
-
           />
           <input
             className="new-quote__btn"

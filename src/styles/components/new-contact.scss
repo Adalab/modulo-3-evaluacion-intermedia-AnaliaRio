@@ -2,7 +2,7 @@
   &__title {
     padding: 3rem 0 1rem 0;
     font-size: 1.5rem;
-    color: #a349a4;
+    color: #9c8cd4;
   }
 
   &__input {
@@ -17,7 +17,7 @@
     transition: all ease 0.3s;
 
     &:focus {
-      border-color: #a349a4;
+      border-color:   #9c8cd4;
       background-color: #fff;
       box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     }
@@ -27,16 +27,16 @@
     padding: 0.5rem 1.5rem;
     border-radius: 0.5rem;
     border: none;
-    border: 2px solid #a349a4;
-    background-color: #a349a4;
+    border: 2px solid   #9c8cd4;
+    background-color:   #9c8cd4;
     font-weight: bold;
-    color: #fff;
+    color: #f6df80;
     cursor: pointer;
     transition: all ease 0.3s;
 
     &:hover {
-      border-color: #a349a4;
-      background-color: #a349a4;
+      border-color:   #9c8cd4;
+      background-color:  rgb(51, 184, 171);
     }
   }
 }
