@@ -1,30 +1,43 @@
+import { useEffect, useState } from 'react';
 import '../styles/App.scss';
-import quoteList from "../data/quotes.json";
-import { useState } from 'react';
+import getQuotes from '../services/fetch';
+import ls from '../services/localStorage';
 
 function App() {
-  console.log(quoteList);
 
   // ---------- STATE VARIABLES ----------
-  const [data, setData] = useState(quoteList);
-  const [search, setSearch] = useState("");
-  const [searchByCharacter, setSearchByCharacter] = useState("");
+  
+  const [data, setData] = useState(ls.get("quotes", [])); // Local storage
 
-  // Quote I'm adding
+  // Filters / Search
+  const [filterQuote, setFilterQuote] = useState(""); // Filter 1
+  const [filterCharacter, setFilterCharacter] = useState("all"); // Filter 2
+  
+  // Add quote
   const [newQuote, setNewQuote] = useState({
     quote: "",
     character: "",
   });
 
+  // ---------- FETCH & LOCAL STORAGE ----------
+  useEffect(() => {
+    if (data.length === 0) {
+      getQuotes().then(dataFromAPI => {
+        ls.set("quotes", dataFromAPI);
+        setData(dataFromAPI);
+      });
+    }
+  }, []);
+
   // ---------- FUNCTIONS ----------
-  // 1. Function to modify search button state variable
+  // 1. Function to modify search button state variable - Detects what you write
   const handleSearch = (ev) => {
-    setSearch(ev.target.value);
+    setFilterQuote(ev.target.value);
   }
 
-  // 2. Function to modify search button state variable
-  const handleSearchByCharacter = (ev) => {
-    setSearchByCharacter(ev.target.value);
+  // 2. Function to modify search button state variable - Detects what you select
+  const handleSearchCharacter = (ev) => {
+    setFilterCharacter(ev.target.value);
   };
 
   // 3. Function to add new quote - SPREAD changes a single property of an object
@@ -49,20 +62,39 @@ function App() {
     });
   };
 
-  // PAINT IN HTML - Filter first and then MAP (concatenate)
+  // ---------- PAINT IN HTML - 1st FILTER & 2nd MAP (concatenate)
+
   const htmlData = data
 
-  .filter(
-    (oneQuote) =>
-      oneQuote.quote.toLowerCase().includes(search.toLowerCase()) ||
-      oneQuote.character.toLowerCase().includes(search.toLowerCase())
-  )
-  .filter(
-    (oneQuote) =>
-      oneQuote.quote.toLowerCase().includes(searchByCharacter.toLowerCase()) ||
-      oneQuote.character.toLowerCase().includes(searchByCharacter.toLowerCase())
+  // ---------- FILTER ----------
+  .filter(oneQuote =>
+    oneQuote.quote.toLowerCase().includes(filterQuote.toLowerCase())
   )
 
+  // .filter(oneQuote =>
+  //   oneQuote.character.toLowerCase().includes(filterCharacter.toLowerCase())
+  // )
+
+  .filter(oneQuote => {
+
+      // return (filterCharacter === "all") ? true : (filterCharacter === oneQuote.character);
+
+      //return (filterCharacter === "all") || (filterCharacter === oneQuote.character);
+      
+      if (filterCharacter === "all") {
+        return true;
+      }
+      else if (filterCharacter === oneQuote.character) {
+        return true;
+      }
+      // Los no seleccionados
+      else {
+        return false;
+      }
+    }
+  )
+
+  // ---------- MAP - Paint characters ----------
   .map((quote, i)=> {
     return (
       <li className="quote__item" key={i}>
@@ -73,52 +105,63 @@ function App() {
     );
   });
 
+//   let diaSemana = 'lunes';
+
+//   if( diaSemaqna ==== "l")
+//  {
+//    console.log("Atrabajar");
+//  }
+//  else if( disSemana === "M") {
+//    console.log("Animo");
+//  }
+//  else if ( diaSemana === "Miércoles") {
+//    console.log("Ya vamos por la mitad");
+//  }
+
   return (
     <div className="page">
 
       {/* ---------- HEADER ---------- */}
       <header className="header">
         <a target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=Xs-HbHCcK58">  <h1 className="header__title">Frases de Friends 🦞</h1></a>
-      
         <form>
-          <label htmlFor="">Filtrar por frase</label>
+          <label htmlFor="filterQuote">Filtrar por frase</label>
           <input
             className="header__search"
             autoComplete="off"
             name="search"
             type="search"
-            placeholder="Filtrar por frase"
+            placeholder="Escribe una frase"
             onChange={handleSearch}
-            value={search}
+            value={filterQuote}
           />
         </form>
-
         <form>
           <label htmlFor="characters">Filtrar por personaje</label>
           <select
             name="characters"
             id="characters"
             className="header__search"
-            onChange={handleSearchByCharacter}
-            value={searchByCharacter}
+            onChange={handleSearchCharacter}
+            value={filterCharacter}
           >
-            <option value="Todos">Todos</option>
+            <option value="all">Todos</option>
             <option value="Ross">Ross</option>
             <option value="Monica">Monica</option>
             <option value="Joey">Joey</option>
             <option value="Phoebe">Phoebe</option>
             <option value="Chandler">Chandler</option>
             <option value="Rachel">Rachel</option>
+            <option value="Janice">Janice</option>
           </select>
-      
         </form>
-
       </header>
 
       <main>
 
         {/* ---------- QUOTE LIST ---------- */}
         <ul className="quote__list">
+          {/* {htmlData.length === 0 && "No hay resultados"} */}
           {htmlData}
         </ul>
 

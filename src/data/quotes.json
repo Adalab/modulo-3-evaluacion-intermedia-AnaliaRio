@@ -20,6 +20,10 @@
     "character": "Chandler"
   },
   {
+    "quote": "Oh God! My eyes! My eyes!",
+    "character": "Phoebe"
+  },
+  {
     "quote": "I got off the plane.",
     "character": "Rachel"
   },
@@ -48,11 +52,51 @@
     "character": "Rachel"
   },
   {
-    "quote": "Here come the meat sweats.",
+    "quote": "You lied. Then you lied about lying. Then you lied about lying about lying. So before you lie about lying about lying about lying about lying- Stop lying.",
     "character": "Joey"
   },
   {
     "quote": "Look at me! I'm Chandler! Could I be wearing any more clothes?!",
     "character": "Joey"
+  },
+  {
+    "quote": "She's your lobster.",
+    "character": "Phoebe"
+  },
+  {
+    "quote": "I’m over you. And that, my friends, is what you call closure.",
+    "character": "Rachel"
+  },
+  {
+    "quote": "I'm gonna go get one of those job things.",
+    "character": "Rachel"
+  },
+  {
+    "quote": "Oh My God!!",
+    "character": "Janice"
+  },
+  {
+    "quote": "I know!!",
+    "character": "Monica"
+  },
+  {
+    "quote": "I believe that the sun has set on our day in the sun.",
+    "character": "Janice"
+  },
+  {
+    "quote": "They don’t know that we know that they know!",
+    "character": "Monica"
+  },
+  {
+    "quote": "Welcome to the real world! It sucks. You’re gonna love it!",
+    "character": "Monica"
+  },
+  {
+    "quote": "I take thee, Rachel.",
+    "character": "Ross"
+  },
+  {
+    "quote": "Your husband's home! So now the sex can stop!",
+    "character": "Chandler"
   }
 ]
